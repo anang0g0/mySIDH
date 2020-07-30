@@ -16,9 +16,9 @@ SIDH開発用のリポジトリを新規に作り、eccからリポジトリを�
 
 bigint.cの使い始めということもあり、まずは楕円曲線のパラメータを設定するプログラムを書いてみました。
 
-bigint\sidh.c
+sidh.c
 
-bigint/sidh.cpp
+sidh.cpp
 
 です。
 
