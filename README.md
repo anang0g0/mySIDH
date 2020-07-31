@@ -24,6 +24,8 @@ TOWARDS QUANTUM-RESISTANT CRYPTOSYSTEMS FROM SUPERSINGULAR ELLIPTIC CURVE ISOGEN
 https://github.com/defeo/ss-isogeny-software
 
 調べていくうちに著者の書いたソースコードまで手に入ってオトクな気分。
+実装するのに手がかりになりそう。
+単なる論文の具体例だけでなく、実際に動かしてみることができる。
 早とちりかも知れないけど、何だか楽しみ。
 
 20200730
