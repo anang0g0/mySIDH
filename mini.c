@@ -71,7 +71,7 @@ typedef struct {
 unsigned int p=431;
 unsigned int pp=185761;
 
-//p=131 のとき y^2 = x^3 + x + 23 の j-不変量は 78 となります。
+
 
 
 //  SIDH sp434;
@@ -142,8 +142,8 @@ com cmul(com a,com b){
   com c;
   long long int d,e;
   
-  c.re=a.re*b.re;//%p;
-  c.re+= -1*(a.im*b.im);//%p;
+  c.re=a.re*b.re-(a.im*b.im);//%p;;//%p;
+ 
   d=(a.re*b.im);//%p;
   e=(b.re*a.im);//%p;
   //  c.re=c.re+c.im;//%p;
@@ -151,6 +151,7 @@ com cmul(com a,com b){
 
   return c;
 }
+
 
 com cinv(com a){
   com c,a1,a2,b1,b2,h,w;
@@ -203,15 +204,16 @@ com cdiv(com a,com b){
   d.re=b.re*b.re+b.im*b.im;
   d.im=0;
   
-  v.re=a.re*b.re+a.im*b.im;
-  v.im=(a.im*b.re-a.re*b.im);
-  //f=cinv(d);
+  v.re=(a.re*b.re+a.im*b.im);
+  v.im=(a.im*b.re)-(a.re*b.im);
+  f=cinv(d);
   //f.im=0;
-  printf("d=%d %di\n",d.re%p,d.im);
-  d=cinv(d);
+  printf("d=%lld %lldi\n",d.re,d.im);
+  exit(1);
+  //d=cinv(d);
   //d.im=0;
-  //v=(v,d);
-  printf("v=%d %di\n",v.re%p,v.im%p);
+  //  v=cmul(v,d);
+  printf("v=%lld %lldi\n",v.re,v.im);
   exit(1);
   
   //c.re=d.re;
@@ -339,13 +341,24 @@ BigInt exp(BigInt aa,BigInt bb,BigInt oo){
 }
 */
 
+com cc(com a,com b){
+  com c;
+
+  c.re= a.re*b.re+a.im*b.im;
+  c.im=0;
+  
+  
+  return c;
+}
+
+
 int
 main ()
 {
 
   char buf[65536];
   CM sp434;
-  com a1,a2,b1,b2,j,r,o,q,g,f,v,w,h,r2,g2,h2,h1;
+  com a1,a2,b1,b2,j,r,o,q,g,f,v,w,h,r2,g2,h2,h1,c;
   int s=31,t=304,l,k,n,i,count=0,a,b,jj,aa,bb,jj2;
 
   s=inv(s,p); //a1
@@ -397,23 +410,40 @@ main ()
   //printf("%d %d\n",r.re,r.im);
   //a^2-4
   h=csub(r,f);
+  printf("%lld %lld\n",h.re,h.im);
+  b1=cadd(r,f);
+  printf("%lld %lld\n",b1.re,b1.im);
+  b2=cmul(r,r);
+  h1=cmul(f,f);
+  h1=cadd(h1,b2);
+  printf("%lld %lld\n",h1.re,h1.im);
+  //  exit(1);
+  
   //  b2=cinv(h);
   //b2=cmul(b2,h);
-  printf("cimv(h)=%d %d\n",h.re,h.im);
-  //  exit(1);
+  //printf("cimv(h)=%lld %lld\n",c.re,c.im);
+  //exit(1);
+  
+//p=131 のとき y^2 = x^3 + x + 23 の j-不変量は 78 となります。
 
-  //g=a^2-3
+//g=a^2-3
   g=csub(r,o);
   printf("a^2-3: %d %d\n",g.re,g.im);
+  printf("a^2-4: %lld %lld\n",h.re,h.im);
   //exit(1);
   //g=256*(a^2-3)^3
+  //(a^2 - 3)^2 = -4184900860 - 2323531392 I
+  //(a^2 - 3)^3 = 228212128828152 - 239983944473728 I
 
-  //g=cmul(cmul(cmul(g,g),g),q);
-  g=cmul(g,g);
-  //g=cdiv(g,h);
+  g=cmul(cmul(cmul(g,g),g),q);
+  //g.re=g.re%p;
+  //g.im=g.im%p;
+  //h=cmul(g,g);
+
   //  g=cmul(g,b2);
-  printf("g=256*(a^2-3)^3/(a^2-4): %d %d\n",g.re,g.im);
-  //exit(1);
+  printf("g=256*(a^2-3)^3: %lld %lld\n",g.re,g.im);
+    g=cdiv(g,h);
+  exit(1);
   
   //a=162+172i
   //a2.re=162;
