@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-
+#include <omp.h>
 
 
 typedef struct {
-  int re;
-  int im;
+  long long int re;
+  long long int im;
 } com;
 
 typedef struct {
@@ -70,6 +70,9 @@ typedef struct {
 
 unsigned int p=431;
 unsigned int pp=185761;
+
+//p=131 のとき y^2 = x^3 + x + 23 の j-不変量は 78 となります。
+
 
 //  SIDH sp434;
 
@@ -137,7 +140,7 @@ com csub(com a,com b){
 
 com cmul(com a,com b){
   com c;
-  unsigned int d,e;
+  long long int d,e;
   
   c.re=a.re*b.re;//%p;
   c.re+= -1*(a.im*b.im);//%p;
@@ -150,25 +153,46 @@ com cmul(com a,com b){
 }
 
 com cinv(com a){
-  com c;
-  unsigned int d,e,f,g,A,pp;
+  com c,a1,a2,b1,b2,h,w;
+  unsigned int i,j,d,e,f,g,A,pp,l,n;
+
+
+      for(l=0;l<p;l++){
+    //#pragma omp parallel for
+    for(n=0;n<p;n++){
+  //a=162+172i
+  //a2.re=162;
+  //a2.im=172;
+      a2.re=l; //259
+      a2.im=n; //340
+  b1=cmul(a2,a);
+  if(b1.re%p==1 && b1.im%p==0){
+    printf("%d %d %d %d\n",a1.re,a1.im,b1.re%p,b1.im%p);
+    printf("%d %d\n",l,n);
+    // exit(1);
+    return a2;
+  }
+    }
+      }
+      
 
   
-
-  
+  /*    
   A=-1;
   d=a.re*a.re;
   e=a.im*a.im;
   f=(d+e);
   g=inv(f,p);
-  d=a.re*g%pp;
-  f=a.im*A%pp;
-  e=f*g%pp;
+  d=a.re*g%p;
+  f=a.im*A%p;
+  e=f*g%p;
   // unsigned int_mul(g,e,f);
   c.re=d;
   c.im=e;
-
-  return c;
+  */
+     
+      
+      //  return;
 }
 
 
@@ -181,12 +205,12 @@ com cdiv(com a,com b){
   
   v.re=a.re*b.re+a.im*b.im;
   v.im=(a.im*b.re-a.re*b.im);
-  f.re= inv(d.re,pp);
-  f.im=0;
-  printf("d=%d %di\n",d.re,d.im);
-  d.re=inv(d.re,p);
-  d.im=0;
-  v=cmul(v,d);
+  //f=cinv(d);
+  //f.im=0;
+  printf("d=%d %di\n",d.re%p,d.im);
+  d=cinv(d);
+  //d.im=0;
+  //v=(v,d);
   printf("v=%d %di\n",v.re%p,v.im%p);
   exit(1);
   
@@ -239,7 +263,11 @@ PO eadd2(PO P,PO Q){
   
 }
 
-com j_inv(com a){
+
+//E = EllipticCurve(GF(131), [0, 0, 0, 1, 23])
+//E.j_invariant()
+
+  com j_inv(com a){
   com x,y,z,u,v,w;
   //  unsigned int w;
   
@@ -317,8 +345,9 @@ main ()
 
   char buf[65536];
   CM sp434;
-  com a1,a2,j,r,o,q,g,f,v,w,h;
-  int s=31,t=304;
+  com a1,a2,b1,b2,j,r,o,q,g,f,v,w,h,r2,g2,h2,h1;
+  int s=31,t=304,l,k,n,i,count=0,a,b,jj,aa,bb,jj2;
+
   s=inv(s,p); //a1
   v.re=s;
   v.im=0;
@@ -333,8 +362,9 @@ main ()
   f.re=4;
   f.im=0;
   
-  h.re=p;
-  h.im=0;
+  //h.re=p;
+  //h.im=0;
+  
   //q=cdiv(r,o);
   //printf("%d %d\n",q.re,q.im);
   //exit(1);
@@ -342,22 +372,99 @@ main ()
   //a=161+208i
   a1.re=161;
   a1.im=208;
-  //a=162+172i
-  a2.re=162;
-  a2.im=172;
+
+  /*
+(-3+a^2))
+-17346 + 66976 I
+
+256 (-3 + a^2)^3
+58422304980006912 - 61435889785274368 I
+-4 + a^2
+-17347 + 66976 I
+256 (-3 + a^2)^3 / (-4 + a^2)
+- (5128181878746715973632/4786702985) - (2847163918235788476416 I)/4786702985
+  */
+  
+  //b1=cinv(a1);
+  //b2=cmul(a1,b1);
+  //printf("%d %d\n",b2.re%p,b2.im%p);
+
+  //exit(1);
+  
+  
   //r=a*a
   r=cmul(a1,a1);
-  printf("%d %d\n",r.re,r.im);
+  //printf("%d %d\n",r.re,r.im);
+  //a^2-4
+  h=csub(r,f);
+  //  b2=cinv(h);
+  //b2=cmul(b2,h);
+  printf("cimv(h)=%d %d\n",h.re,h.im);
+  //  exit(1);
+
   //g=a^2-3
   g=csub(r,o);
   printf("a^2-3: %d %d\n",g.re,g.im);
+  //exit(1);
   //g=256*(a^2-3)^3
-  g=cmul(cmul(cmul(g,g),g),q);
-  printf("g=256*(a^2-3)^3: %d %d\n",g.re,g.im);
 
+  //g=cmul(cmul(cmul(g,g),g),q);
+  g=cmul(g,g);
+  //g=cdiv(g,h);
+  //  g=cmul(g,b2);
+  printf("g=256*(a^2-3)^3/(a^2-4): %d %d\n",g.re,g.im);
+  //exit(1);
+  
+  //a=162+172i
+  //a2.re=162;
+  //a2.im=172;
+  /*
+      a2.re=l; //259
+      a2.im=n; //340
+      a2=cinv(a1);
+  b1=cmul(a2,a1);
+  if(b1.re%p==1 && b1.im%p==0){
+    printf("%d %d %d %d\n",a2.re,a2.im,b1.re%p,b1.im%p);
+    printf("%d %d\n",l,n);
+    // exit(1);
+  }
+  */
+
+
+
+  //exit(1);
+  //r=a*a
+  r2=cmul(a2,a2);
+  aa=4*l*l*l%p;
+  bb=(aa+27*n*n)%p;
+  jj2=aa*inv(bb,p)%p;
+  //printf("%d %d\n",r2.re,r2.im);
+  //a^2-4
+  h1=csub(r2,f);
+  h2=cinv(h2);
+  //g=a^2-3
+  g2=csub(r2,o);
+  //printf("a^2-3: %d %d\n",g2.re,g2.im);
+  //g=256*(a^2-3)^3
+  g2=cmul(cmul(cmul(g2,g2),g2),q);
+  g2=cmul(g2,h2);
+  //printf("g=256*(a^2-3)^3: %d %d\n",g2.re,g2.im);
+  if(g2.re%p==g.re%p && g2.im%p==g.im%p){// && h2.re%p==h.re%p && h2.im%p==h.re%p){
+  // if(jj==jj2 && i!=l && k!=n){
+  //  if(g.re==g2.re && g.im==g2.im && h2.re%p==h.re%p && h2.im%p==h.im%p && i!=l && k!=n){
+    printf("%d %d %d %d\n",g2.re,g2.im,h2.re,h2.im);
+    //printf("%d %d %d %d\n",a1.re,a1.im,a2.re,a2.im);
+    count++;
+    //exit(1);
+      }
+}
+
+
+  /*
   //f=a^2-4
   f=csub(r,f);
   printf("f=a^2-4: %d %d\n",f.re,f.im);
+
   //256(a^2-3)^3/(a^2-4)
   g=cdiv(g,f);
   
@@ -378,3 +485,4 @@ main ()
 
   return 0;
 }
+  */
