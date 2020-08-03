@@ -422,30 +422,3 @@ main ()
 
 }
 
-
-  /*
-  //f=a^2-4
-  f=csub(r,f);
-  printf("f=a^2-4: %d %d\n",f.re,f.im);
-
-  //256(a^2-3)^3/(a^2-4)
-  g=cdiv(g,f);
-  
-  printf("256(a^2-3)^3/(a^2-4): %d %d\n",g.re%p,g.im%p);
-  h=cmul(g,v);
-  printf("%d %d\n",h.re,h.im);
-  exit(1);
-  
-  a2.re=162;
-  a2.im=172;
-  j=j_inv(a1);
-
-  printf("%d %d\n",j.re%p,j.im%p);
-  exit(1);
-  j=j_inv(a2);
-
-  printf("%d %d\n",j.re,j.im);
-
-  return 0;
-}
-  */
