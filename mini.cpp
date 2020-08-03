@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include <omp.h>
+#include <iostream>
 
 #include "bigint.hpp"
 
@@ -70,7 +71,8 @@ typedef struct {
   unsigned int n;
 } CM;
 
-unsigned int p=431;
+BigInt p="0x0002341F271773446CFC5FD681C520567BC65C783158AEA3FDC1767AE2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
+  //431;
 unsigned int pp=185761;
 
 
@@ -289,29 +291,42 @@ com j_inv(com a){
   //printf("%d %d\n",r.re,r.im);
   //a^2-4
   h=csub(r,f);
-  printf("a^2-4: %lld %lld\n",h.re,h.im);
+  //printf("a^2-4: %lld %lld\n",h.re,h.im);
+  h.re.write(std::cout << "test")<<std::endl;
+  h.im.write(std::cout << "test")<<std::endl;
   b1=cadd(r,f);
-  printf("%lld %lld\n",b1.re,b1.im);
+  b1.re.write(std::cout << "test")<<std::endl;
+  b1.re.write(std::cout << "test")<<std::endl;
+  //printf("%lld %lld\n",b1.re,b1.im);
   b2=cmul(r,r);
   h1=cmul(f,f);
   h1=cadd(h1,b2);
-  printf("%lld %lld\n",h1.re,h1.im);
-  
+  //printf("%lld %lld\n",h1.re,h1.im);
+  h1.re.write(std::cout << "test")<<std::endl;
+  h1.re.write(std::cout << "test")<<std::endl;
   //p=131 のとき y^2 = x^3 + x + 23 の j-不変量は 78 となります。
   
   //g=a^2-3
   g=csub(r,o);
-  printf("a^2-3: %d %d\n",g.re,g.im);
-  printf("a^2-4: %lld %lld\n",h.re,h.im);
+  //printf("a^2-3: %d %d\n",g.re,g.im);
+  g.re.write(std::cout << "test")<<std::endl;
+  g.re.write(std::cout << "test")<<std::endl;
+  //printf("a^2-4: %lld %lld\n",h.re,h.im);
+  h.re.write(std::cout << "test")<<std::endl;
+  h.re.write(std::cout << "test")<<std::endl;
   //g=256*(a^2-3)^3
   //(a^2 - 3)^2 = -4184900860 - 2323531392 I
   //(a^2 - 3)^3 = 228212128828152 - 239983944473728 I
   
   g=cmul(cmul(cmul(g,g),g),q);
   
-  printf("g=256*(a^2-3)^3: %lld %lld\n",g.re,g.im);
+  //printf("g=256*(a^2-3)^3: %lld %lld\n",g.re,g.im);
+  g.re.write(std::cout << "test")<<std::endl;
+  g.im.write(std::cout << "test")<<std::endl;
   g=cdiv(g,h);
-  printf("ans=%lld,%lld\n",g.re,g.im);
+  g.re.write(std::cout << "j-invariant.re: ")<<std::endl;
+  g.im.write(std::cout << "j-invariant.im: ")<<std::endl;
+  //printf("ans=%lld,%lld\n",g.re,g.im);
 
   
   return g;
@@ -413,11 +428,13 @@ main ()
   //exit(1);
 
   //a=161+208i
-  a1.re=161;
-  a1.im=208;
+  a1.re=6;
+  a1.im=0;
 
   j_inv(a1);
   printf("a1======================================\n");
+  exit(1);
+  
   a2.re=162;
   a2.im=172;
 
