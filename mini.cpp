@@ -71,7 +71,8 @@ typedef struct {
   unsigned int n;
 } CM;
 
-BigInt p="0x0002341F271773446CFC5FD681C520567BC65C783158AEA3FDC1767AE2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
+BigInt p=431;
+  //"0x0002341F271773446CFC5FD681C520567BC65C783158AEA3FDC1767AE2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
   //431;
 unsigned int pp=185761;
 
@@ -321,8 +322,8 @@ com j_inv(com a){
   g=cmul(cmul(cmul(g,g),g),q);
   
   //printf("g=256*(a^2-3)^3: %lld %lld\n",g.re,g.im);
-  g.re.write(std::cout << "test")<<std::endl;
-  g.im.write(std::cout << "test")<<std::endl;
+  g.re.write(std::cout << "test: ")<<std::endl;
+  g.im.write(std::cout << "test: ")<<std::endl;
   g=cdiv(g,h);
   g.re.write(std::cout << "j-invariant.re: ")<<std::endl;
   g.im.write(std::cout << "j-invariant.im: ")<<std::endl;
@@ -428,8 +429,8 @@ main ()
   //exit(1);
 
   //a=161+208i
-  a1.re=6;
-  a1.im=0;
+  a1.re=161;//6;
+  a1.im=208;
 
   j_inv(a1);
   printf("a1======================================\n");
