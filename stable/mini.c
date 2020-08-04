@@ -1,5 +1,3 @@
-
- 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -317,16 +315,17 @@ com j_inv(com a){
   //(a^2 - 3)^3 = 228212128828152 - 239983944473728 I
   
   g=cmul(cmul(cmul(g,g),g),q);
-  
+  g.re=g.re%p;
+  g.im=g.im%p;
   printf("g=256*(a^2-3)^3: %lld %lld\n",g.re,g.im);
   g=cdiv(g,h);
   if(g.re>p)
     g.re%=p;
   if(g.re<0)
     g.re+=p;
-  if(g.im>0)
+  if(g.im>p)
     g.im%=p;
-  if(g.im<p)
+  if(g.im<0)
     g.im+=p;
   printf("ans=%lld,%lld\n",g.re%p,g.im%p);
 
@@ -339,12 +338,14 @@ com j_inv(com a){
 BigInt exp(BigInt aa,BigInt bb,BigInt oo){
   BigInt ii,jj,kk[8192];
   int j,c[8192],count=0,i;
+
  ii=oo;
   j=0;
   jj=0;
 //  kk[4096]; //prime is 4096 bit table
 //  c[8192]  //mod is 8192 bit table
   count=0;
+
   for(i=0;i<8192;i++){
     kk[i]=0;
     }
@@ -352,7 +353,10 @@ BigInt exp(BigInt aa,BigInt bb,BigInt oo){
     ii = (ii>>1);
     j=j+1;
   }
+
+
   kk[0]=aa;
+
 //  std::cout << j << "\n";
   
 //ex.1000=2**3+2**5+2**6+2**7+2**8+2**9 makes a array c=[3,5,6,7,8,9]
@@ -368,6 +372,7 @@ BigInt exp(BigInt aa,BigInt bb,BigInt oo){
     for(i=1;i<c[count-1]+1;i++){
       kk[i] = kk[i-1]*kk[i-1]%oo;
     }
+
     jj=1;
     for(i=0;i<count;i++){
       jj=kk[c[i]]*jj%oo;
@@ -375,6 +380,7 @@ BigInt exp(BigInt aa,BigInt bb,BigInt oo){
 //	print i,"\n"
       }
     }
+
     return jj;
 }
 */
@@ -426,12 +432,17 @@ main ()
 
   j_inv(a1);
   printf("a1======================================\n");
-  a2.re=415;
-    //162;
-  a2.im=0;//172;
+  //exit(1);
+  
+  a2.re=162;
+  //162;
+  a2.im=172;
 
-  j_inv(a2);
- 
+      
+      a2=j_inv(a2);
+      printf("j-invariant is %d+%di\n",a2.re,a2.im);
+
+  
   return 0;
 }
 
