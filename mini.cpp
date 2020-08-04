@@ -71,10 +71,11 @@ typedef struct {
   unsigned int n;
 } CM;
 
-BigInt p=431;
+BigInt p=71;
+  //431;
   //"0x0002341F271773446CFC5FD681C520567BC65C783158AEA3FDC1767AE2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
   //431;
-unsigned int pp=185761;
+BigInt pp=185761;
 
 
 
@@ -173,7 +174,10 @@ com cinv(com a){
       a2.im=n; //340
   b1=cmul(a2,a);
   if(b1.re%p==1 && b1.im%p==0){
-    printf("%d %d %d %d\n",a1.re,a1.im,b1.re%p,b1.im%p);
+    a1.re.write(std::cout) << std::endl;
+    a1.im.write(std::cout) << std::endl;
+    (b1.re%p).write(std::cout) << std::endl;
+    (b1.im%p).write(std::cout) << std::endl;
     printf("%d %d\n",l,n);
     // exit(1);
     return a2;
@@ -196,9 +200,10 @@ com cinv(com a){
   c.re=d;
   c.im=e;
   */
-     
+      c.re=0;
+      c.im=0;
       
-      //  return;
+ return c;
 }
 
 
@@ -293,28 +298,28 @@ com j_inv(com a){
   //a^2-4
   h=csub(r,f);
   //printf("a^2-4: %lld %lld\n",h.re,h.im);
-  h.re.write(std::cout << "test")<<std::endl;
-  h.im.write(std::cout << "test")<<std::endl;
+  h.re.write(std::cout)<<std::endl;
+  h.im.write(std::cout)<<std::endl;
   b1=cadd(r,f);
-  b1.re.write(std::cout << "test")<<std::endl;
-  b1.re.write(std::cout << "test")<<std::endl;
+  b1.re.write(std::cout)<<std::endl;
+  b1.re.write(std::cout)<<std::endl;
   //printf("%lld %lld\n",b1.re,b1.im);
   b2=cmul(r,r);
   h1=cmul(f,f);
   h1=cadd(h1,b2);
   //printf("%lld %lld\n",h1.re,h1.im);
-  h1.re.write(std::cout << "test")<<std::endl;
-  h1.re.write(std::cout << "test")<<std::endl;
+  h1.re.write(std::cout)<<std::endl;
+  h1.re.write(std::cout)<<std::endl;
   //p=131 のとき y^2 = x^3 + x + 23 の j-不変量は 78 となります。
-  
   //g=a^2-3
+  
   g=csub(r,o);
   //printf("a^2-3: %d %d\n",g.re,g.im);
-  g.re.write(std::cout << "test")<<std::endl;
-  g.re.write(std::cout << "test")<<std::endl;
+  g.re.write(std::cout)<<std::endl;
+  g.re.write(std::cout)<<std::endl;
   //printf("a^2-4: %lld %lld\n",h.re,h.im);
-  h.re.write(std::cout << "test")<<std::endl;
-  h.re.write(std::cout << "test")<<std::endl;
+  h.re.write(std::cout)<<std::endl;
+  h.re.write(std::cout)<<std::endl;
   //g=256*(a^2-3)^3
   //(a^2 - 3)^2 = -4184900860 - 2323531392 I
   //(a^2 - 3)^3 = 228212128828152 - 239983944473728 I
@@ -405,7 +410,7 @@ main ()
   com a1,a2,b1,b2,j,r,o,q,g,f,v,w,h,r2,g2,h2,h1,c;
   BigInt s=31,t=304,a,b,jj,aa,bb,jj2;
   int l,k,n,i,count=0;
-  
+  PO ii,kk;
 
   s=inv(s,p); //a1
   v.re=s;
@@ -429,18 +434,45 @@ main ()
   //exit(1);
 
   //a=161+208i
-  a1.re=161;//6;
-  a1.im=208;
+  a1.re= -161;//6;
+  a1.im= -208;
 
   j_inv(a1);
   printf("a1======================================\n");
-  exit(1);
+  //  exit(1);
   
   a2.re=162;
   a2.im=172;
 
   j_inv(a2);
- 
+
+  c.re=71;
+  c.im=0;
+
+  /*
+  for(i=0;i<p;i++){
+    ii.x.re=i;
+    for(k=0;k<p;k++){
+      ii.x.im=k;
+      for(l=0;l<p;l++){
+	ii.y.re=l;
+	for(n=0;n<p;n++){
+	  ii.y.im=n;
+	  if((cdiv(cmul(ii.y,ii.y),c).re) == (cdiv(cadd(cadd(cmul(cmul(ii.x,ii.x),ii.x),cmul(a1,cmul(ii.x,ii.x))),ii.x),c).re) && (cdiv(cmul(ii.y,ii.y),c).im) == (cdiv(cadd(cadd(cmul(cmul(ii.x,ii.x),ii.x),cmul(a1,cmul(ii.x,ii.x))),ii.x),c).im)){
+	    printf("count=%u\n",count++);
+	    ii.x.re.write(std::cout << ", ");
+	    ii.x.im.write(std::cout << ", ");
+	    ii.y.re.write(std::cout << ", ");
+	    ii.y.im.write(std::cout << ",") << std::endl;
+	}
+	}
+      }
+    }
+  
+  }
+  */  
+  
+  
   return 0;
 }
 
