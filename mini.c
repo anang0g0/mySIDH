@@ -465,7 +465,7 @@ main ()
   printf("j=%d %d\n",a2.re,a2.im);
   //exit(1);
 
-  
+  //同じｊ不変量を持つ楕円曲線を総探索する 20200804
   for(i=0;i<p;i++){
     o.re=i;
     for(k=0;k<p;k++){
