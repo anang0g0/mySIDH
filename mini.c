@@ -5,6 +5,7 @@
 #include <omp.h>
 
 
+
 typedef struct {
   long long int re;
   long long int im;
@@ -109,10 +110,17 @@ com cadd(com a,com b){
   com c;
 
   c.re=(a.re+b.re);
+  if(c.re>p)
+    c.re=c.re%p;
+  if(c.re<0)
+    c.re+=p;
   c.im=(a.im+b.im);
-  c.re=c.re;
-  c.im=c.im;
+  if(c.im>p)
+    c.im=c.im%p;
+  if(c.im<0)
+    c.im=c.im+p;
 
+  
   return c;
 }
 
@@ -129,8 +137,9 @@ com inv_add(com a){// -a
 }
 
 com csub(com a,com b){
-  com c;
+  com c,m;
 
+  
   c.re=(a.re-b.re);
   c.im=(a.im-b.im);
     
@@ -158,42 +167,26 @@ com cinv(com a){
   unsigned int i,j,d,e,f,g,A,pp,l,n;
 
 
-      for(l=0;l<p;l++){
+  for(l=0;l<p;l++){
     //#pragma omp parallel for
     for(n=0;n<p;n++){
-  //a=162+172i
-  //a2.re=162;
-  //a2.im=172;
+      //a=162+172i
+      //a2.re=162;
+      //a2.im=172;
       a2.re=l; //259
       a2.im=n; //340
-  b1=cmul(a2,a);
-  if(b1.re%p==1 && b1.im%p==0){
-    printf("%d %d %d %d\n",a1.re,a1.im,b1.re%p,b1.im%p);
-    printf("%d %d\n",l,n);
-    // exit(1);
-    return a2;
-  }
-    }
+      b1=cmul(a2,a);
+      if(b1.re%p==1 && b1.im%p==0){
+	printf("%d %d %d %d\n",a1.re,a1.im,b1.re%p,b1.im%p);
+	printf("%d %d\n",l,n);
+	// exit(1);
+	return a2;
       }
-      
-
+    }
+  }
   
-  /*    
-  A=-1;
-  d=a.re*a.re;
-  e=a.im*a.im;
-  f=(d+e);
-  g=inv(f,p);
-  d=a.re*g%p;
-  f=a.im*A%p;
-  e=f*g%p;
-  // unsigned int_mul(g,e,f);
-  c.re=d;
-  c.im=e;
-  */
-     
-      
-      //  return;
+        
+  return a2;
 }
 
 
@@ -215,6 +208,11 @@ com cdiv(com a,com b){
   
   v.re=((p+v.re)*d.re)%p;
   v.im=((v.im%p)*d.re)%p;
+  if(v.re>p)
+    v.re=v.re%p;
+  if(v.im<0)
+    v.im+=p;
+  
   printf("v=%lld %lldi\n",v.re,v.im);
   //  exit(1);
   
@@ -260,11 +258,12 @@ PO eadd(PO P,PO Q){
 
 
 
-PO eadd2(PO P,PO Q){
+PO eadd2(PO P){
   com a,b,c;
   PO R;
 
   
+  return R;  
 }
 
 
@@ -309,7 +308,15 @@ com j_inv(com a){
   
   printf("g=256*(a^2-3)^3: %lld %lld\n",g.re,g.im);
   g=cdiv(g,h);
-  printf("ans=%lld,%lld\n",g.re,g.im);
+  if(g.re>p)
+    g.re%=p;
+  if(g.re<0)
+    g.re+=p;
+  if(g.im>0)
+    g.im%=p;
+  if(g.im<p)
+    g.im+=p;
+  printf("ans=%lld,%lld\n",g.re%p,g.im%p);
 
   
   return g;
@@ -414,11 +421,12 @@ main ()
 
   j_inv(a1);
   printf("a1======================================\n");
-  a2.re=162;
-  a2.im=172;
+  a2.re=423;
+    //162;
+  a2.im=102;//172;
 
   j_inv(a2);
-  exit(1);
-
+ 
+  return 0;
 }
 
