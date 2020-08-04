@@ -205,11 +205,34 @@ com cdiv(com a,com b){
   long long g;
   
 
-  d.re=b.re*b.re+b.im*b.im;
+  d.re=(b.re*b.re+b.im*b.im)%p;
+  if(d.re>p)
+    d.re=d.re%p;
+  if(d.re<0)
+    d.re=d.re+p;
+  
   d.im=0;
   
   v.re=((a.re%p)*(b.re%p)+((a.im%p)*(b.im%p))%p)%p;
   v.im=((a.im%p)*(b.re%p))-(a.re%p)*(b.im%p);
+    if(a.re>p)
+      a.re=a.re%p;
+    if(a.re<0)
+      a.re=b.re+p;
+    if(a.im>p)
+      a.im=b.im%p;
+    if(a.im<0)
+      a.re=a.im+p;
+
+    if(b.re>p)
+      b.re=a.re%p;
+    if(b.re<0)
+      b.re=b.re+p;
+    if(b.im>p)
+      b.im=b.im%p;
+    if(b.im<0)
+      b.re=a.im+p;
+    
   printf("re=%lld %lld\n",a.re,b.re);
   printf("imm=%lldi %lldi\n",a.im,b.im);
   //exit(1);
@@ -315,18 +338,19 @@ com j_inv(com a){
   //(a^2 - 3)^3 = 228212128828152 - 239983944473728 I
   
   g=cmul(cmul(cmul(g,g),g),q);
-  
+  g.re=g.re%p;
+  g.im=g.im%p;
   printf("g=256*(a^2-3)^3: %lld %lld\n",g.re,g.im);
   g=cdiv(g,h);
   if(g.re>p)
     g.re%=p;
   if(g.re<0)
     g.re+=p;
-  if(g.im>0)
-    g.im%=p;
-  if(g.im<p)
+  if(g.im>p)
+    g.im=g.im%p;
+  if(g.im<0)
     g.im+=p;
-  printf("ans=%lld,%lld\n",g.re%p,g.im%p);
+  printf("ans=%lld,%lld\n",g.re,g.im);
 
   
   return g;
@@ -431,12 +455,39 @@ main ()
 
   j_inv(a1);
   printf("a1======================================\n");
-  a2.re=415;
-    //162;
-  a2.im=0;//172;
+  //exit(1);
+  
+  a2.re=161;
+  //162;
+  a2.im=208;//172;
+  a2=j_inv(a2);
 
-  j_inv(a2);
- 
+  printf("j=%d %d\n",a2.re,a2.im);
+  //exit(1);
+
+  
+  for(i=0;i<p;i++){
+    o.re=i;
+    for(k=0;k<p;k++){
+      o.im=k;
+      
+      r=j_inv(o);
+      //scanf("%d",&n);
+      if(r.re==304 && r.im==364){
+	printf("(i,k)=%d %d\n",i,k);
+	count++;
+      }
+      /*
+      if(i==161 && k==208){
+	printf("??\n");
+	exit(1);
+      }
+      */
+    }
+  }
+  printf("p=%d count=%d\n",p,count);
+
+  
   return 0;
 }
 
