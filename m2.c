@@ -426,7 +426,7 @@ main ()
   char buf[65536];
   CM sp434;
   com a1,a2,b1,b2,j,r,o,q,g,f,v,w,h,r2,g2,h2,h1,c;
-  int s=31,t=304,l,k,n,i,count=0,a,b,jj,aa,bb,jj2,test[431][431][2]={0},tmp[431]={0};
+  int s=31,t=304,l,k,n,i,count=0,a,b,jj,aa,bb,jj2,test[431][431][2]={0},tmp[431][431]={0};
 
   s=inv(s,p); //a1
   v.re=s;
@@ -512,21 +512,24 @@ main ()
 
   for(i=0;i<p;i++){
      for(k=0;k<p;k++){
-    //if(test[i][k]>=0){
-      // tmp[test[i][0]]=-1;
+    if(test[i][k]>=0){
+      tmp[test[i][k][0]][test[i][k][1]]=-1;
+      // tmp[test[i][k][1]]=-1;
        printf("j_inv=%d,%d %d %d\n",i,k,test[i][k][0],test[i][k][1]);
-      //count++;
+       //count++;
       }
-      //}
+      }
   }
-    /*
+    
     for(i=0;i<p;i++){
-      if(tmp[i]== -1)
+      for(k=0;k<p;k++){
+      if(tmp[i][k]== -1)
 	count++;
+      }
     }
     printf("%d\n",count);
-    */
-    //exit(1);
+    
+    exit(1);
     /*
     //j-invariant
       if(r.re==304 && r.im==364){
