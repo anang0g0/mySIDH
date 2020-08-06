@@ -8,6 +8,8 @@ https://en.wikipedia.org/wiki/Supersingular_elliptic_curve
 ここまで理論的な話は仕様書を見るだけで実装すればいいので関係ないけど、一度関心を持ってしまうとハマってなかなか抜け出せない。
 ほどほどで終わらせるのがいいようだ。
 
+https://ja.wikipedia.org/wiki/%E8%B6%85%E7%89%B9%E7%95%B0%E5%90%8C%E7%A8%AE%E5%86%99%E5%83%8F%E3%83%87%E3%82%A3%E3%83%95%E3%82%A3%E3%83%BC%E3%83%BB%E3%83%98%E3%83%AB%E3%83%9E%E3%83%B3
+
 20200805
 
 行き詰まっています。
