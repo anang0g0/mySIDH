@@ -205,34 +205,11 @@ com cdiv(com a,com b){
   long long g;
   
 
-  d.re=(b.re*b.re+b.im*b.im)%p;
-  if(d.re>p)
-    d.re=d.re%p;
-  if(d.re<0)
-    d.re=d.re+p;
-  
+  d.re=b.re*b.re+b.im*b.im;
   d.im=0;
   
   v.re=((a.re%p)*(b.re%p)+((a.im%p)*(b.im%p))%p)%p;
   v.im=((a.im%p)*(b.re%p))-(a.re%p)*(b.im%p);
-    if(a.re>p)
-      a.re=a.re%p;
-    if(a.re<0)
-      a.re=b.re+p;
-    if(a.im>p)
-      a.im=b.im%p;
-    if(a.im<0)
-      a.re=a.im+p;
-
-    if(b.re>p)
-      b.re=a.re%p;
-    if(b.re<0)
-      b.re=b.re+p;
-    if(b.im>p)
-      b.im=b.im%p;
-    if(b.im<0)
-      b.re=a.im+p;
-    
   printf("re=%lld %lld\n",a.re,b.re);
   printf("imm=%lldi %lldi\n",a.im,b.im);
   //exit(1);
@@ -347,10 +324,10 @@ com j_inv(com a){
   if(g.re<0)
     g.re+=p;
   if(g.im>p)
-    g.im=g.im%p;
+    g.im%=p;
   if(g.im<0)
     g.im+=p;
-  printf("ans=%lld,%lld\n",g.re,g.im);
+  printf("ans=%lld,%lld\n",g.re%p,g.im%p);
 
   
   return g;
@@ -450,42 +427,30 @@ main ()
   //exit(1);
 
   //a=161+208i
-  a1.re=161;
-  a1.im=208;
+  a1.re=423;
+  a1.im=102;
 
   j_inv(a1);
   printf("a1======================================\n");
-  //exit(1);
+  exit(1);
+
+  a2.re=68;
+  a2.im=350;//208;//172;
+  b1.re=2;
+  b1.im=0;
+  b2.re=4;
+  b2.im=0;
+  a2=csub(b1,cmul(cmul(a2,a2),b2));
+ printf("j=%d %d\n",a2.re%p,p+(a2.im%p));
+  exit(1);
   
-  a2.re=161;
+  a2.re=162;
   //162;
-  a2.im=208;//172;
-  a2=j_inv(a2);
+  a2.im=172;
 
-  printf("j=%d %d\n",a2.re,a2.im);
-  //exit(1);
-
-  //同じｊ不変量を持つ楕円曲線を総探索する 20200804
-  for(i=0;i<p;i++){
-    o.re=i;
-    for(k=0;k<p;k++){
-      o.im=k;
       
-      r=j_inv(o);
-      //scanf("%d",&n);
-      if(r.re==304 && r.im==364){
-	printf("(i,k)=%d %d\n",i,k);
-	count++;
-      }
-      /*
-      if(i==161 && k==208){
-	printf("??\n");
-	exit(1);
-      }
-      */
-    }
-  }
-  printf("p=%d count=%d\n",p,count);
+      a2=j_inv(a2);
+      printf("j-invariant is %d+%di\n",a2.re,a2.im);
 
   
   return 0;
